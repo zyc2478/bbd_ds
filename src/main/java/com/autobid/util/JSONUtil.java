@@ -5,6 +5,8 @@ import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * 实体类和JSON对象之间相互转化（依赖包jackson-all-1.7.6.jar、jsoup-1.5.2.jar）
@@ -30,6 +32,20 @@ public class JSONUtil {
             e.printStackTrace();
         }
         return t;
+    }
+
+    public static JSONObject transFirstLowerObj(JSONObject jsonObj) {
+        JSONObject resultObj=new JSONObject();
+        Iterator it = jsonObj.keys();
+        while (it.hasNext()) {
+            String key = (String) it.next();
+            String transKey = (new StringBuilder()).append(Character.toLowerCase(key.charAt(0))).append(
+                    key.substring(1)).toString();
+            //Object object = jsonObj.get(key);
+            resultObj.accumulate(transKey, jsonObj.get(key));
+
+        }
+        return resultObj;
     }
 
     /*

@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autobid.dao.BidListDAO">
+  <resultMap id="BaseResultMap" type="com.autobid.model.BidList">
+    <id column="listingId" jdbcType="INTEGER" property="listingId" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="months" jdbcType="INTEGER" property="months" />
+    <result column="rate" jdbcType="DOUBLE" property="rate" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="bidAmount" jdbcType="INTEGER" property="bidAmount" />
+    <result column="bidDate" jdbcType="TIMESTAMP" property="bidDate" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    listingId, title, `months`, rate, amount, bidAmount, bidDate
+  </sql>
+  <select id="selectByExample" parameterType="com.autobid.model.BidListExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bid_list
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+    <if test="forUpdate != null and forUpdate == true">
+      for update
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from bid_list
+    where listingId = #{listingId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from bid_list
+    where listingId = #{listingId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.autobid.model.BidListExample">
+    delete from bid_list
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.autobid.model.BidList">
+    insert into bid_list (listingId, title, `months`, 
+      rate, amount, bidAmount, 
+      bidDate)
+    values (#{listingId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{months,jdbcType=INTEGER}, 
+      #{rate,jdbcType=DOUBLE}, #{amount,jdbcType=DECIMAL}, #{bidAmount,jdbcType=INTEGER}, 
+      #{bidDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.autobid.model.BidList">
+    insert into bid_list
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="listingId != null">
+        listingId,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="months != null">
+        `months`,
+      </if>
+      <if test="rate != null">
+        rate,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="bidAmount != null">
+        bidAmount,
+      </if>
+      <if test="bidDate != null">
+        bidDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="listingId != null">
+        #{listingId,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="months != null">
+        #{months,jdbcType=INTEGER},
+      </if>
+      <if test="rate != null">
+        #{rate,jdbcType=DOUBLE},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="bidAmount != null">
+        #{bidAmount,jdbcType=INTEGER},
+      </if>
+      <if test="bidDate != null">
+        #{bidDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.autobid.model.BidListExample" resultType="java.lang.Long">
+    select count(*) from bid_list
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update bid_list
+    <set>
+      <if test="record.listingId != null">
+        listingId = #{record.listingId,jdbcType=INTEGER},
+      </if>
+      <if test="record.title != null">
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.months != null">
+        `months` = #{record.months,jdbcType=INTEGER},
+      </if>
+      <if test="record.rate != null">
+        rate = #{record.rate,jdbcType=DOUBLE},
+      </if>
+      <if test="record.amount != null">
+        amount = #{record.amount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.bidAmount != null">
+        bidAmount = #{record.bidAmount,jdbcType=INTEGER},
+      </if>
+      <if test="record.bidDate != null">
+        bidDate = #{record.bidDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update bid_list
+    set listingId = #{record.listingId,jdbcType=INTEGER},
+      title = #{record.title,jdbcType=VARCHAR},
+      `months` = #{record.months,jdbcType=INTEGER},
+      rate = #{record.rate,jdbcType=DOUBLE},
+      amount = #{record.amount,jdbcType=DECIMAL},
+      bidAmount = #{record.bidAmount,jdbcType=INTEGER},
+      bidDate = #{record.bidDate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.autobid.model.BidList">
+    update bid_list
+    <set>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="months != null">
+        `months` = #{months,jdbcType=INTEGER},
+      </if>
+      <if test="rate != null">
+        rate = #{rate,jdbcType=DOUBLE},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="bidAmount != null">
+        bidAmount = #{bidAmount,jdbcType=INTEGER},
+      </if>
+      <if test="bidDate != null">
+        bidDate = #{bidDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where listingId = #{listingId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.autobid.model.BidList">
+    update bid_list
+    set title = #{title,jdbcType=VARCHAR},
+      `months` = #{months,jdbcType=INTEGER},
+      rate = #{rate,jdbcType=DOUBLE},
+      amount = #{amount,jdbcType=DECIMAL},
+      bidAmount = #{bidAmount,jdbcType=INTEGER},
+      bidDate = #{bidDate,jdbcType=TIMESTAMP}
+    where listingId = #{listingId,jdbcType=INTEGER}
+  </update>
+</mapper>

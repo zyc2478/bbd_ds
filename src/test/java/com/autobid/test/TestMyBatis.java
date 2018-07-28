@@ -21,6 +21,7 @@ import com.alibaba.fastjson.JSON;
 public class TestMyBatis {
     private static Logger logger = Logger.getLogger(TestMyBatis.class);
     //  private ApplicationContext ac = null;
+
     @Resource
     private IUserService userService = null;
 
@@ -35,6 +36,15 @@ public class TestMyBatis {
         User user = userService.getUserById(1);
         // System.out.println(user.getUserName());
         // logger.info("Öµ£º"+user.getUserName());
+        logger.info(JSON.toJSONString(user));
+    }
+
+    @Test
+    public void test2() {
+        User user = userService.getUserById(1);
+        user.setId(125);
+        user.setName("TestInsert");
+        userService.insertUser(user);
         logger.info(JSON.toJSONString(user));
     }
 }

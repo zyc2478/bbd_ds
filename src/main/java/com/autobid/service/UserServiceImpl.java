@@ -10,9 +10,13 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements IUserService {
     @Resource
     private IUserDao userDao;
+
     @Override
     public User getUserById(int userId) {
         return this.userDao.selectByPrimaryKey(userId);
     }
+
+    @Override
+    public void insertUser(User user) { this.userDao.insert(user); }
 
 }

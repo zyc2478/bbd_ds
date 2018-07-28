@@ -10,7 +10,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-@RequestMapping("/hello")
+@RequestMapping("/bidList")
 public class HelloMvcController {
 
     @Resource
@@ -20,7 +20,7 @@ public class HelloMvcController {
      * 使用JSON作为响应内容
      */
 
-   // @CrossOrigin(origins="*",maxAge=3600)
+    // @CrossOrigin(origins="*",maxAge=3600)
     //@RequestMapping(value="/getUser/{userID}",method= RequestMethod.GET)
     @CrossOrigin(origins="*",maxAge=3600)
     @RequestMapping(value="/getUser/{userID}", produces = "text/json; charset=utf-8")

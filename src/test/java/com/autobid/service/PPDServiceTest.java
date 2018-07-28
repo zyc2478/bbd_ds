@@ -1,48 +1,52 @@
 package com.autobid.service;
 
-import com.autobid.util.InitUtil;
-import net.sf.json.JSONArray;
+import com.autobid.model.BidList;
+import com.autobid.test.TestMyBatis;
+import net.sf.json.JSONObject;
+import org.apache.log4j.Logger;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import javax.annotation.Resource;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
+@RunWith(SpringJUnit4ClassRunner.class)     //表示继承了SpringJUnit4ClassRunner类
+@ContextConfiguration(locations = {"classpath:spring-mybatis.xml"})
 
 public class PPDServiceTest {
 
-    private static Logger logger = Logger.getLogger("PPDServiceTest.class");
+    private static Logger logger = Logger.getLogger(PPDServiceTest.class);
 
-    private static String token = "";
+/*    @Resource
+    private BidListService bidListService;*/
 
-    public void init() {
-        try {
-            InitUtil.init();
-            token = InitUtil.getToken();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    @Resource
+    private PPDService ppdService = null;
+
+    //@Test
+    public void testInsertBidList() throws Exception {
+        //ppdService.fetchBidList("2018-07-01","2018-07-15");
+
+        String bidListObj = "{\"title\":\"pdu2****305第15次借款\",\"listingId\":119825782,\"months\":12,\"rate\":20,\"amount\":12427,\"bidAmount\":188}";
+        JSONObject bidListJo = JSONObject.fromObject(bidListObj);
+        System.out.println("bidListJo:" + bidListJo);
+        BidList bl =(BidList)JSONObject.toBean(bidListJo,BidList.class);
+        System.out.println(bl);
+        //System.out.println(bl.getTitle() +  "," + bl.getAmount());
+/*        bl.setAmount(3000l);
+        bl.setBidAmount(288);
+        bl.setListingId(1451856156);
+        bl.setTitle("测试Title");
+        bl.setMonths(12);
+        bl.setRate(10.0);*/
+        System.out.println(bl);
+
+        //System.out.println(bidListService.insertBidList(bl));
     }
 
     @Test
-    public void testBidListPeriod() throws Exception {
-        init();
-        System.out.println(token);
-        JSONArray bidListArray = PPDService.bidList(token,"2017-10-01","2017-10-31",1,50);
-        for(Object bidListObj:bidListArray){
-            System.out.println("testBidList最终结果是："+bidListObj);
-        }
-    }
-
-    //@Test
-    public void testBatchListingInfos() throws Exception {
-        logger.info("");
-        List<Integer> listIds = new ArrayList<>();
-        listIds.add(92751890);
-        listIds.add(92727980);
-        listIds.add(92711160);
-        JSONArray listingInfosArray = PPDService.batchListingInfos(listIds);
-        for(Object listingInfos:listingInfosArray){
-            logger.info("最终结果是："+listingInfos.toString());
-        }
+    public void testFetchBidList() throws Exception {
+        ppdService.fetchBidList("2018-07-01","2018-07-15");
     }
 }

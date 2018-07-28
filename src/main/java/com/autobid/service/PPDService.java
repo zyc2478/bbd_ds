@@ -1,116 +1,63 @@
 package com.autobid.service;
 
-import com.autobid.util.Log4JUtil;
-import com.ppdai.open.core.*;
-import com.sun.istack.internal.logging.Logger;
+import com.autobid.model.BidList;
+import com.autobid.util.InitUtil;
+import com.autobid.util.JSONUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.List;
+import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Logger;
 
-/**
- * @Author Richard Zeng
- * @ClassName: BidService
- * @Description: 与拍拍贷的API调用服务
- * @Date 2017年10月13日 下午5:15:21
- */
+@RunWith(SpringJUnit4ClassRunner.class)     //��ʾ�̳���SpringJUnit4ClassRunner��
+@ContextConfiguration(locations = {"classpath:spring-mybatis.xml"})
 
-@SuppressWarnings("deprecation")
 public class PPDService {
 
-    private static Logger logger = Logger.getLogger(PPDService.class);
-/*
-     BidService.BidList返回JSON
-    {
-        "Result": 0,
-        "ResultMessage": "null",
-        "TotalPages": "1",
-        "TotalRecord": "20",
-        "BidList": {
-            "Title": "测试使用",
-            "ListingId": "223423",
-            "Months": "10",
-            "Rate": "10",
-            "Amount": "10000",
-            "BidAmount": "80"
+    private static Logger logger = Logger.getLogger("PPDService.class");
+
+    private static String token = "";
+
+    @Resource
+    private BidListService bidListService = null;
+
+    public void init() {
+        try {
+            InitUtil.init();
+            token = InitUtil.getToken();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
-*/
-    public static JSONArray bidList(String token, String startTime, String endTime, int pageIndex, int pageSize) throws Exception {
-        String url = "https://openapi.ppdai.com/invest/BidService/BidList";
-        Result result = OpenApiClient.send(url, token,
-                new PropertyObject("StartTime",startTime, ValueTypeEnum.DateTime),
-                new PropertyObject("EndTime",endTime, ValueTypeEnum.DateTime),
-                new PropertyObject("PageIndex",pageIndex, ValueTypeEnum.Int32),
-                new PropertyObject("PageSize",pageSize, ValueTypeEnum.Int32));
-        if(pageIndex==0){
-            result = OpenApiClient.send(url, token,
-                    new PropertyObject("StartTime",startTime, ValueTypeEnum.DateTime),
-                    new PropertyObject("EndTime",endTime, ValueTypeEnum.DateTime),
-                    new PropertyObject("PageSize",pageSize, ValueTypeEnum.Int32));
+
+
+    public void fetchBidList(String startDate,String endDate) throws Exception {
+        init();
+        System.out.println(token);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        JSONArray bidListArray = PPDApiService.bidList(token,startDate, endDate,1,50);
+        for(Object bidListObj:bidListArray){
+
+            JSONObject bidListJO = JSONObject.fromObject(bidListObj);
+            //System.out.println("bidListJO: " + bidListJO);
+            JSONObject transBidListJO = JSONUtil.transFirstLowerObj(bidListJO);
+            //System.out.println("transBidListJO: " + transBidListJO);
+            Date bidDate = sdf.parse(endDate);
+            BidList bl =(BidList)JSONObject.toBean(transBidListJO,BidList.class);
+            bl.setBidDate(bidDate);
+            System.out.println("bl: " + bl);
+            //System.out.println(bl.getTitle() +  "," + bl.getAmount());
+            System.out.println(bidListService.insertBidList(bl));
         }
-        JSONObject resultJSON = JSONObject.fromObject(result.getContext());
-        logger.info(String.valueOf(resultJSON));
-        JSONArray bidListArray = resultJSON.getJSONArray("BidList");
-        return bidListArray;
     }
-/*
-    LLoanInfoService.BatchListingInfos接口返回JSON
-    {
-        "LoanInfos": [
-            {
-                "FistBidTime": null,
-                "LastBidTime": null,
-                "LenderCount": 0,
-                "AuditingTime": null,
-                "RemainFunding": 1500,
-                "DeadLineTimeOrRemindTimeStr": "2016/11/19",
-                "CreditCode": "AA",
-                "ListingId": 23886149,
-                "Amount": 1500,
-                "Months": 42,
-                "CurrentRate": 12.0085,
-                "BorrowName": "zhangsan",
-                "Gender": 1,
-                "EducationDegree": "专科",
-                "GraduateSchool": "四川工业科技学院",
-                "StudyStyle": "普通",
-                "Age": 22,
-                "SuccessCount": 0,
-                "WasteCount": 0,
-                "CancelCount": 0,
-                "FailedCount": 0,
-                "NormalCount": 0,
-                "OverdueLessCount": 0,
-                "OverdueMoreCount": 0,
-                "OwingPrincipal": 0,
-                "OwingAmount": 0,
-                "AmountToReceive": 0,
-                "FirstSuccessBorrowTime": null,
-                "LastSuccessBorrowTime": null,
-                "RegisterTime": "2016-11-04T04:57:40.473",
-                "CertificateValidate": 1,
-                "NciicIdentityCheck": 0,
-                "PhoneValidate": 1,
-                "VideoValidate": 0,
-                "CreditValidate": 0,
-                "EducateValidate": 1,
-                "HighestPrincipal":500.00,
-                "HighestDebt":500.00,
-                "TotalPrincipal":500.00
-            },
-            {
-                "xx": "……"
-            }
-        ],
-        "Result": 1,
-        "ResultMessage": "",
-        "ResultCode": null
-    }
- */
-    public static JSONArray batchListingInfos(List<Integer> listIds) throws Exception {
-        String url = "https://openapi.ppdai.com/invest/LLoanInfoService/BatchListingInfos";
-        Result result = OpenApiClient.send(url, new PropertyObject("ListingIds", listIds, ValueTypeEnum.Other));
-        return JSONObject.fromObject(result.getContext()).getJSONArray("LoanInfos");
+    @Test
+    public void testFetchBidList() throws Exception {
+        this.fetchBidList("2018-04-12","2018-04-12");
     }
 }
