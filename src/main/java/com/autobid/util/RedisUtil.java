@@ -32,9 +32,14 @@ public final class RedisUtil {
             config.setMaxWaitMillis(MAX_WAIT);
 //            boolean TEST_ON_BORROW = true;
             config.setTestOnBorrow(true);
+            config.setTestOnReturn(true);
+            String redisHost = ConfUtil.getProperty("redis_host");
+            int redisPort = Integer.parseInt(ConfUtil.getProperty("redis_port"));
+
+            jedisPool=new JedisPool(config,redisHost,new Integer(redisPort),600);
             //jedisPool = new JedisPool(config, ADDR, PORT, TIMEOUT, AUTH);
-            String ADDR = "localhost";
-            jedisPool = new JedisPool(config, ADDR);
+            //String ADDR = "localhost";
+            //jedisPool = new JedisPool(config, ADDR);
         } catch (Exception e) {
             e.printStackTrace();
         }

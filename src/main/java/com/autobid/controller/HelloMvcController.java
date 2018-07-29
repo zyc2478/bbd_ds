@@ -10,7 +10,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-@RequestMapping("/bidList")
+@RequestMapping("/hello")
 public class HelloMvcController {
 
     @Resource

@@ -1,4 +1,4 @@
-package com.autobid.service;
+package com.autobid.api;
 
 import com.ppdai.open.core.*;
 import com.sun.istack.internal.logging.Logger;

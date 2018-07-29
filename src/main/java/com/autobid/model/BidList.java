@@ -15,7 +15,10 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Table(name="bid_list")
 public class BidList implements Serializable {
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "JDBC")
+    private Integer id;
+
+    @NotEmpty
     private Integer listingId;
 
     @NotEmpty
@@ -36,6 +39,14 @@ public class BidList implements Serializable {
     private Date bidDate;
 
     private static final long serialVersionUID = 1L;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Integer getListingId() {
         return listingId;
@@ -105,7 +116,8 @@ public class BidList implements Serializable {
             return false;
         }
         BidList other = (BidList) that;
-        return (this.getListingId() == null ? other.getListingId() == null : this.getListingId().equals(other.getListingId()))
+        return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
+            && (this.getListingId() == null ? other.getListingId() == null : this.getListingId().equals(other.getListingId()))
             && (this.getTitle() == null ? other.getTitle() == null : this.getTitle().equals(other.getTitle()))
             && (this.getMonths() == null ? other.getMonths() == null : this.getMonths().equals(other.getMonths()))
             && (this.getRate() == null ? other.getRate() == null : this.getRate().equals(other.getRate()))
@@ -118,6 +130,7 @@ public class BidList implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
         result = prime * result + ((getListingId() == null) ? 0 : getListingId().hashCode());
         result = prime * result + ((getTitle() == null) ? 0 : getTitle().hashCode());
         result = prime * result + ((getMonths() == null) ? 0 : getMonths().hashCode());
@@ -134,6 +147,7 @@ public class BidList implements Serializable {
         sb.append(getClass().getSimpleName());
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
+        sb.append(", id=").append(id);
         sb.append(", listingId=").append(listingId);
         sb.append(", title=").append(title);
         sb.append(", months=").append(months);

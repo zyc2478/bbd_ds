@@ -2,7 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.autobid.dao.BidListDAO">
   <resultMap id="BaseResultMap" type="com.autobid.model.BidList">
-    <id column="listingId" jdbcType="INTEGER" property="listingId" />
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="listingId" jdbcType="INTEGER" property="listingId" />
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="months" jdbcType="INTEGER" property="months" />
     <result column="rate" jdbcType="DOUBLE" property="rate" />
@@ -69,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    listingId, title, `months`, rate, amount, bidAmount, bidDate
+    id, listingId, title, `months`, rate, amount, bidAmount, bidDate
   </sql>
   <select id="selectByExample" parameterType="com.autobid.model.BidListExample" resultMap="BaseResultMap">
     select
@@ -100,11 +101,11 @@
     select 
     <include refid="Base_Column_List" />
     from bid_list
-    where listingId = #{listingId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from bid_list
-    where listingId = #{listingId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByExample" parameterType="com.autobid.model.BidListExample">
     delete from bid_list
@@ -112,7 +113,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.autobid.model.BidList">
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.autobid.model.BidList" useGeneratedKeys="true">
     insert into bid_list (listingId, title, `months`, 
       rate, amount, bidAmount, 
       bidDate)
@@ -120,7 +121,7 @@
       #{rate,jdbcType=DOUBLE}, #{amount,jdbcType=DECIMAL}, #{bidAmount,jdbcType=INTEGER}, 
       #{bidDate,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.autobid.model.BidList">
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.autobid.model.BidList" useGeneratedKeys="true">
     insert into bid_list
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="listingId != null">
@@ -178,6 +179,9 @@
   <update id="updateByExampleSelective" parameterType="map">
     update bid_list
     <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
       <if test="record.listingId != null">
         listingId = #{record.listingId,jdbcType=INTEGER},
       </if>
@@ -206,7 +210,8 @@
   </update>
   <update id="updateByExample" parameterType="map">
     update bid_list
-    set listingId = #{record.listingId,jdbcType=INTEGER},
+    set id = #{record.id,jdbcType=INTEGER},
+      listingId = #{record.listingId,jdbcType=INTEGER},
       title = #{record.title,jdbcType=VARCHAR},
       `months` = #{record.months,jdbcType=INTEGER},
       rate = #{record.rate,jdbcType=DOUBLE},
@@ -220,6 +225,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.autobid.model.BidList">
     update bid_list
     <set>
+      <if test="listingId != null">
+        listingId = #{listingId,jdbcType=INTEGER},
+      </if>
       <if test="title != null">
         title = #{title,jdbcType=VARCHAR},
       </if>
@@ -239,16 +247,17 @@
         bidDate = #{bidDate,jdbcType=TIMESTAMP},
       </if>
     </set>
-    where listingId = #{listingId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.autobid.model.BidList">
     update bid_list
-    set title = #{title,jdbcType=VARCHAR},
+    set listingId = #{listingId,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
       `months` = #{months,jdbcType=INTEGER},
       rate = #{rate,jdbcType=DOUBLE},
       amount = #{amount,jdbcType=DECIMAL},
       bidAmount = #{bidAmount,jdbcType=INTEGER},
       bidDate = #{bidDate,jdbcType=TIMESTAMP}
-    where listingId = #{listingId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

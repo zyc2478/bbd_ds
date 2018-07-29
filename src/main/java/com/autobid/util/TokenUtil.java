@@ -26,9 +26,10 @@ public class TokenUtil {
             expireDays = Integer.parseInt(ConfUtil.getProperty("expire_days"));
 //            int refreshTokenExpired = Integer.parseInt(ConfUtil.getProperty("refresh_token_expired"));
             initDate = ConfUtil.getProperty("init_date");
-            String redisHost = ConfUtil.getProperty("redis_host");
-            int redisPort = Integer.parseInt(ConfUtil.getProperty("redis_port"));
-            jedis = new Jedis(redisHost, redisPort);
+            //String redisHost = ConfUtil.getProperty("redis_host");
+            //int redisPort = Integer.parseInt(ConfUtil.getProperty("redis_port"));
+            //jedis = new Jedis(redisHost, redisPort);
+            jedis = RedisUtil.getJedis();
         } catch (Exception e) {
             e.printStackTrace();
         }

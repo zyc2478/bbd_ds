@@ -1,12 +1,12 @@
 package com.autobid.service;
 
 import com.autobid.dao.BidListDAO;
-import com.autobid.dao.BidListMapper;
 import com.autobid.model.BidList;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.autobid.model.BidListExample;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service("bidListService")
 public class BidListServiceImpl implements BidListService {
@@ -17,7 +17,13 @@ public class BidListServiceImpl implements BidListService {
     @Override
     public int insertBidList(BidList bidList) { return this.bidListDao.insert(bidList); }
 
+    BidListExample bidListExample = new BidListExample();
+
     @Override
-    public BidList getBidListById(int listingId) { return this.bidListDao.selectByPrimaryKey(new Integer(listingId)); }
+    public List<BidList> getBidListByListingId(int listingId) {
+
+        bidListExample.createCriteria().andListingIdEqualTo(new Integer(listingId));
+        return this.bidListDao.selectByExample(bidListExample);
+    }
 
 }

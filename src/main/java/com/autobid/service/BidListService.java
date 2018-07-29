@@ -1,11 +1,12 @@
 package com.autobid.service;
 
 import com.autobid.model.BidList;
-import com.autobid.model.User;
+
+import java.util.List;
 
 public interface BidListService {
 
     int insertBidList(BidList bidList);
 
-    BidList getBidListById(int listingId);
+    List<BidList> getBidListByListingId(int listingId);
 }

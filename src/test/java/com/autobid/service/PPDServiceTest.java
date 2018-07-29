@@ -1,12 +1,11 @@
 package com.autobid.service;
 
+import com.autobid.job.BidListJob;
 import com.autobid.model.BidList;
-import com.autobid.test.TestMyBatis;
 import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import javax.annotation.Resource;
@@ -22,7 +21,7 @@ public class PPDServiceTest {
     private BidListService bidListService;*/
 
     @Resource
-    private PPDService ppdService = null;
+    private BidListJob bidListJob = null;
 
     //@Test
     public void testInsertBidList() throws Exception {
@@ -47,6 +46,6 @@ public class PPDServiceTest {
 
     @Test
     public void testFetchBidList() throws Exception {
-        ppdService.fetchBidList("2018-07-01","2018-07-15");
+        bidListJob.fetchBidList("2018-07-01","2018-07-15");
     }
 }
