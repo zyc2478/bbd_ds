@@ -10,6 +10,9 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.quartz.Job;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -21,7 +24,7 @@ import java.util.logging.Logger;
 @RunWith(SpringJUnit4ClassRunner.class)     //表示继承了SpringJUnit4ClassRunner类
 @ContextConfiguration(locations = {"classpath:spring-mybatis.xml"})
 
-public class BidListJob {
+public class BidListJob implements Job {
 
     private static Logger logger = Logger.getLogger("PPDService.class");
 
@@ -39,15 +42,26 @@ public class BidListJob {
         }
     }
 
+    @Override
+    public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String today = sdf.format(new Date());
+        try {
+            this.fetchBidList(today,today);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void fetchBidList(String startDate,String endDate) throws Exception {
         init();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         int pageIndex = 1, pageSize = 50;
-        int bidCount = 0;
+        int bidCount;
         do{
             System.out.println("in while");
-
+            bidCount = 0;
             JSONArray bidListArray = PPDApiService.bidList(token,startDate, endDate,pageIndex,pageSize);
 
             for(Object bidListObj:bidListArray){
@@ -65,15 +79,19 @@ public class BidListJob {
                     System.out.println("insert " + bidListService.insertBidList(bl) + " record(s) in bid_list");
                 }
                 bidCount++;
+                System.out.println("bidCount:" + bidCount);
             }
+            pageIndex++;
+            System.out.println("pageIndex: " + pageIndex);
+
         }while(bidCount == 50);
     }
     //@Test
     public void testFetchBidList() throws Exception {
-        this.fetchBidList("2018-02-26","2018-07-29");
+        this.fetchBidList("2017-09-05","2017-09-05");
     }
 
-    @Test
+    //@Test
     public void initAll() throws Exception {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -89,4 +107,6 @@ public class BidListJob {
             System.out.println(i);
         }
     }
+
+
 }
