@@ -20,9 +20,9 @@ public class VwBidListServiceImpl implements VwBidListService {
     public List<VwBidList> getBidSummary(int diffDays) {
 
         VwBidListExample vwBidListExample = new VwBidListExample();
-
         Date beginDate = DateUtil.calcBeginDate(new Date(),diffDays);
-        vwBidListExample.createCriteria().andBid_dateGreaterThan(beginDate);
+        long beginDataTime = beginDate.getTime();
+        vwBidListExample.createCriteria().andBid_date_timeGreaterThan(beginDate);
         return this.vwBidListDAO.selectByExample(vwBidListExample);
     }
 }

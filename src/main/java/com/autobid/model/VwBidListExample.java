@@ -141,63 +141,73 @@ public class VwBidListExample {
             criteria.add(new Criterion(condition, value1, value2));
         }
 
-        public Criteria andBid_total_amountIsNull() {
-            addCriterion("bid_total_amount is null");
+        public Criteria andBid_dateIsNull() {
+            addCriterion("bid_date is null");
             return (Criteria) this;
         }
 
-        public Criteria andBid_total_amountIsNotNull() {
-            addCriterion("bid_total_amount is not null");
+        public Criteria andBid_dateIsNotNull() {
+            addCriterion("bid_date is not null");
             return (Criteria) this;
         }
 
-        public Criteria andBid_total_amountEqualTo(BigDecimal value) {
-            addCriterion("bid_total_amount =", value, "bid_total_amount");
+        public Criteria andBid_dateEqualTo(String value) {
+            addCriterion("bid_date =", value, "bid_date");
             return (Criteria) this;
         }
 
-        public Criteria andBid_total_amountNotEqualTo(BigDecimal value) {
-            addCriterion("bid_total_amount <>", value, "bid_total_amount");
+        public Criteria andBid_dateNotEqualTo(String value) {
+            addCriterion("bid_date <>", value, "bid_date");
             return (Criteria) this;
         }
 
-        public Criteria andBid_total_amountGreaterThan(BigDecimal value) {
-            addCriterion("bid_total_amount >", value, "bid_total_amount");
+        public Criteria andBid_dateGreaterThan(String value) {
+            addCriterion("bid_date >", value, "bid_date");
             return (Criteria) this;
         }
 
-        public Criteria andBid_total_amountGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("bid_total_amount >=", value, "bid_total_amount");
+        public Criteria andBid_dateGreaterThanOrEqualTo(String value) {
+            addCriterion("bid_date >=", value, "bid_date");
             return (Criteria) this;
         }
 
-        public Criteria andBid_total_amountLessThan(BigDecimal value) {
-            addCriterion("bid_total_amount <", value, "bid_total_amount");
+        public Criteria andBid_dateLessThan(String value) {
+            addCriterion("bid_date <", value, "bid_date");
             return (Criteria) this;
         }
 
-        public Criteria andBid_total_amountLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("bid_total_amount <=", value, "bid_total_amount");
+        public Criteria andBid_dateLessThanOrEqualTo(String value) {
+            addCriterion("bid_date <=", value, "bid_date");
             return (Criteria) this;
         }
 
-        public Criteria andBid_total_amountIn(List<BigDecimal> values) {
-            addCriterion("bid_total_amount in", values, "bid_total_amount");
+        public Criteria andBid_dateLike(String value) {
+            addCriterion("bid_date like", value, "bid_date");
             return (Criteria) this;
         }
 
-        public Criteria andBid_total_amountNotIn(List<BigDecimal> values) {
-            addCriterion("bid_total_amount not in", values, "bid_total_amount");
+        public Criteria andBid_dateNotLike(String value) {
+            addCriterion("bid_date not like", value, "bid_date");
             return (Criteria) this;
         }
 
-        public Criteria andBid_total_amountBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("bid_total_amount between", value1, value2, "bid_total_amount");
+        public Criteria andBid_dateIn(List<String> values) {
+            addCriterion("bid_date in", values, "bid_date");
             return (Criteria) this;
         }
 
-        public Criteria andBid_total_amountNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("bid_total_amount not between", value1, value2, "bid_total_amount");
+        public Criteria andBid_dateNotIn(List<String> values) {
+            addCriterion("bid_date not in", values, "bid_date");
+            return (Criteria) this;
+        }
+
+        public Criteria andBid_dateBetween(String value1, String value2) {
+            addCriterion("bid_date between", value1, value2, "bid_date");
+            return (Criteria) this;
+        }
+
+        public Criteria andBid_dateNotBetween(String value1, String value2) {
+            addCriterion("bid_date not between", value1, value2, "bid_date");
             return (Criteria) this;
         }
 
@@ -261,63 +271,123 @@ public class VwBidListExample {
             return (Criteria) this;
         }
 
-        public Criteria andBid_dateIsNull() {
-            addCriterion("bid_date is null");
+        public Criteria andBid_total_amountIsNull() {
+            addCriterion("bid_total_amount is null");
             return (Criteria) this;
         }
 
-        public Criteria andBid_dateIsNotNull() {
-            addCriterion("bid_date is not null");
+        public Criteria andBid_total_amountIsNotNull() {
+            addCriterion("bid_total_amount is not null");
             return (Criteria) this;
         }
 
-        public Criteria andBid_dateEqualTo(Date value) {
-            addCriterion("bid_date =", value, "bid_date");
+        public Criteria andBid_total_amountEqualTo(BigDecimal value) {
+            addCriterion("bid_total_amount =", value, "bid_total_amount");
             return (Criteria) this;
         }
 
-        public Criteria andBid_dateNotEqualTo(Date value) {
-            addCriterion("bid_date <>", value, "bid_date");
+        public Criteria andBid_total_amountNotEqualTo(BigDecimal value) {
+            addCriterion("bid_total_amount <>", value, "bid_total_amount");
             return (Criteria) this;
         }
 
-        public Criteria andBid_dateGreaterThan(Date value) {
-            addCriterion("bid_date >", value, "bid_date");
+        public Criteria andBid_total_amountGreaterThan(BigDecimal value) {
+            addCriterion("bid_total_amount >", value, "bid_total_amount");
             return (Criteria) this;
         }
 
-        public Criteria andBid_dateGreaterThanOrEqualTo(Date value) {
-            addCriterion("bid_date >=", value, "bid_date");
+        public Criteria andBid_total_amountGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("bid_total_amount >=", value, "bid_total_amount");
             return (Criteria) this;
         }
 
-        public Criteria andBid_dateLessThan(Date value) {
-            addCriterion("bid_date <", value, "bid_date");
+        public Criteria andBid_total_amountLessThan(BigDecimal value) {
+            addCriterion("bid_total_amount <", value, "bid_total_amount");
             return (Criteria) this;
         }
 
-        public Criteria andBid_dateLessThanOrEqualTo(Date value) {
-            addCriterion("bid_date <=", value, "bid_date");
+        public Criteria andBid_total_amountLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("bid_total_amount <=", value, "bid_total_amount");
             return (Criteria) this;
         }
 
-        public Criteria andBid_dateIn(List<Date> values) {
-            addCriterion("bid_date in", values, "bid_date");
+        public Criteria andBid_total_amountIn(List<BigDecimal> values) {
+            addCriterion("bid_total_amount in", values, "bid_total_amount");
             return (Criteria) this;
         }
 
-        public Criteria andBid_dateNotIn(List<Date> values) {
-            addCriterion("bid_date not in", values, "bid_date");
+        public Criteria andBid_total_amountNotIn(List<BigDecimal> values) {
+            addCriterion("bid_total_amount not in", values, "bid_total_amount");
             return (Criteria) this;
         }
 
-        public Criteria andBid_dateBetween(Date value1, Date value2) {
-            addCriterion("bid_date between", value1, value2, "bid_date");
+        public Criteria andBid_total_amountBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("bid_total_amount between", value1, value2, "bid_total_amount");
             return (Criteria) this;
         }
 
-        public Criteria andBid_dateNotBetween(Date value1, Date value2) {
-            addCriterion("bid_date not between", value1, value2, "bid_date");
+        public Criteria andBid_total_amountNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("bid_total_amount not between", value1, value2, "bid_total_amount");
+            return (Criteria) this;
+        }
+
+        public Criteria andBid_date_timeIsNull() {
+            addCriterion("bid_date_time is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBid_date_timeIsNotNull() {
+            addCriterion("bid_date_time is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBid_date_timeEqualTo(Date value) {
+            addCriterion("bid_date_time =", value, "bid_date_time");
+            return (Criteria) this;
+        }
+
+        public Criteria andBid_date_timeNotEqualTo(Date value) {
+            addCriterion("bid_date_time <>", value, "bid_date_time");
+            return (Criteria) this;
+        }
+
+        public Criteria andBid_date_timeGreaterThan(Date value) {
+            addCriterion("bid_date_time >", value, "bid_date_time");
+            return (Criteria) this;
+        }
+
+        public Criteria andBid_date_timeGreaterThanOrEqualTo(Date value) {
+            addCriterion("bid_date_time >=", value, "bid_date_time");
+            return (Criteria) this;
+        }
+
+        public Criteria andBid_date_timeLessThan(Date value) {
+            addCriterion("bid_date_time <", value, "bid_date_time");
+            return (Criteria) this;
+        }
+
+        public Criteria andBid_date_timeLessThanOrEqualTo(Date value) {
+            addCriterion("bid_date_time <=", value, "bid_date_time");
+            return (Criteria) this;
+        }
+
+        public Criteria andBid_date_timeIn(List<Date> values) {
+            addCriterion("bid_date_time in", values, "bid_date_time");
+            return (Criteria) this;
+        }
+
+        public Criteria andBid_date_timeNotIn(List<Date> values) {
+            addCriterion("bid_date_time not in", values, "bid_date_time");
+            return (Criteria) this;
+        }
+
+        public Criteria andBid_date_timeBetween(Date value1, Date value2) {
+            addCriterion("bid_date_time between", value1, value2, "bid_date_time");
+            return (Criteria) this;
+        }
+
+        public Criteria andBid_date_timeNotBetween(Date value1, Date value2) {
+            addCriterion("bid_date_time not between", value1, value2, "bid_date_time");
             return (Criteria) this;
         }
     }

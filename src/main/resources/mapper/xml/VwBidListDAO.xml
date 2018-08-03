@@ -2,9 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.autobid.dao.VwBidListDAO">
   <resultMap id="BaseResultMap" type="com.autobid.model.VwBidList">
-    <result column="bid_total_amount" jdbcType="DECIMAL" property="bid_total_amount" />
+    <result column="bid_date" jdbcType="VARCHAR" property="bid_date" />
     <result column="bid_count" jdbcType="BIGINT" property="bid_count" />
-    <result column="bid_date" jdbcType="TIMESTAMP" property="bid_date" />
+    <result column="bid_total_amount" jdbcType="DECIMAL" property="bid_total_amount" />
+    <result column="bid_date_time" jdbcType="TIMESTAMP" property="bid_date_time" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -65,7 +66,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    bid_total_amount, bid_count, bid_date
+    bid_date, bid_count, bid_total_amount, bid_date_time
   </sql>
   <select id="selectByExample" parameterType="com.autobid.model.VwBidListExample" resultMap="BaseResultMap">
     select
@@ -99,33 +100,39 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.autobid.model.VwBidList">
-    insert into vw_bid_list (bid_total_amount, bid_count, bid_date
-      )
-    values (#{bid_total_amount,jdbcType=DECIMAL}, #{bid_count,jdbcType=BIGINT}, #{bid_date,jdbcType=TIMESTAMP}
-      )
+    insert into vw_bid_list (bid_date, bid_count, bid_total_amount, 
+      bid_date_time)
+    values (#{bid_date,jdbcType=VARCHAR}, #{bid_count,jdbcType=BIGINT}, #{bid_total_amount,jdbcType=DECIMAL}, 
+      #{bid_date_time,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.autobid.model.VwBidList">
     insert into vw_bid_list
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="bid_total_amount != null">
-        bid_total_amount,
+      <if test="bid_date != null">
+        bid_date,
       </if>
       <if test="bid_count != null">
         bid_count,
       </if>
-      <if test="bid_date != null">
-        bid_date,
+      <if test="bid_total_amount != null">
+        bid_total_amount,
+      </if>
+      <if test="bid_date_time != null">
+        bid_date_time,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="bid_total_amount != null">
-        #{bid_total_amount,jdbcType=DECIMAL},
+      <if test="bid_date != null">
+        #{bid_date,jdbcType=VARCHAR},
       </if>
       <if test="bid_count != null">
         #{bid_count,jdbcType=BIGINT},
       </if>
-      <if test="bid_date != null">
-        #{bid_date,jdbcType=TIMESTAMP},
+      <if test="bid_total_amount != null">
+        #{bid_total_amount,jdbcType=DECIMAL},
+      </if>
+      <if test="bid_date_time != null">
+        #{bid_date_time,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -138,14 +145,17 @@
   <update id="updateByExampleSelective" parameterType="map">
     update vw_bid_list
     <set>
-      <if test="record.bid_total_amount != null">
-        bid_total_amount = #{record.bid_total_amount,jdbcType=DECIMAL},
+      <if test="record.bid_date != null">
+        bid_date = #{record.bid_date,jdbcType=VARCHAR},
       </if>
       <if test="record.bid_count != null">
         bid_count = #{record.bid_count,jdbcType=BIGINT},
       </if>
-      <if test="record.bid_date != null">
-        bid_date = #{record.bid_date,jdbcType=TIMESTAMP},
+      <if test="record.bid_total_amount != null">
+        bid_total_amount = #{record.bid_total_amount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.bid_date_time != null">
+        bid_date_time = #{record.bid_date_time,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null">
@@ -154,9 +164,10 @@
   </update>
   <update id="updateByExample" parameterType="map">
     update vw_bid_list
-    set bid_total_amount = #{record.bid_total_amount,jdbcType=DECIMAL},
+    set bid_date = #{record.bid_date,jdbcType=VARCHAR},
       bid_count = #{record.bid_count,jdbcType=BIGINT},
-      bid_date = #{record.bid_date,jdbcType=TIMESTAMP}
+      bid_total_amount = #{record.bid_total_amount,jdbcType=DECIMAL},
+      bid_date_time = #{record.bid_date_time,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>

@@ -86,9 +86,9 @@ public class BidListJob implements Job {
 
         }while(bidCount == 50);
     }
-    //@Test
+    @Test
     public void testFetchBidList() throws Exception {
-        this.fetchBidList("2017-09-05","2017-09-05");
+        this.fetchBidList("2018-08-03","2018-08-03");
     }
 
     //@Test
