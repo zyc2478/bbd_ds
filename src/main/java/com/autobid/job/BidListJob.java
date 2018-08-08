@@ -6,6 +6,7 @@ import com.autobid.api.PPDApiService;
 import com.autobid.util.DateUtil;
 import com.autobid.util.InitUtil;
 import com.autobid.util.JSONUtil;
+import com.autobid.util.RedisUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.junit.Test;
@@ -15,6 +16,7 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import redis.clients.jedis.Jedis;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
@@ -29,6 +31,9 @@ public class BidListJob implements Job {
     private static Logger logger = Logger.getLogger("PPDService.class");
 
     private static String token = "";
+
+    Jedis jedis = RedisUtil.getJedis();
+
 
     @Resource
     private BidListService bidListService = null;
@@ -47,7 +52,8 @@ public class BidListJob implements Job {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String today = sdf.format(new Date());
         try {
-            this.fetchBidList(today,today);
+            //this.fetchBidList(today,today);
+            this.fetchEveryDay();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -60,7 +66,7 @@ public class BidListJob implements Job {
         int pageIndex = 1, pageSize = 50;
         int bidCount;
         do{
-            System.out.println("in while");
+            //System.out.println("in while");
             bidCount = 0;
             JSONArray bidListArray = PPDApiService.bidList(token,startDate, endDate,pageIndex,pageSize);
 
@@ -85,10 +91,32 @@ public class BidListJob implements Job {
             System.out.println("pageIndex: " + pageIndex);
 
         }while(bidCount == 50);
+        jedis.set("job_bid_list",endDate);
+        System.out.println("jedis job_bid_list value: " + endDate);
     }
+
     @Test
+    public void fetchEveryDay() throws Exception {
+        String startDate = jedis.get("job_bid_list");
+        System.out.println("get startDate: " + startDate);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date today = new Date();
+        Date yesterday = new Date(today.getTime() - 1000 * 24 * 3600);
+        String endDate = sdf.format(yesterday);
+        if(startDate.equals(endDate)){
+            logger.warning("该日期已经执行过bid_list任务");
+        }else{
+            fetchBidList(endDate,endDate);
+        }
+    }
+    //@Test
     public void testFetchBidList() throws Exception {
-        this.fetchBidList("2018-08-03","2018-08-03");
+/*        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date today = new Date();
+        Date yesterday = new Date(today.getTime() - 1000 * 24 * 3600);
+        String endDate = sdf.format(yesterday);
+        System.out.println(endDate);*/
+        this.fetchBidList("2018-08-06","2018-08-06");
     }
 
     //@Test

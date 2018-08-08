@@ -44,7 +44,7 @@ public class BidDSRun{
                 .build();
         // 每天12点整运行
         Trigger trigger = TriggerBuilder.newTrigger().withIdentity("simple", "group")
-                .withSchedule(CronScheduleBuilder.cronSchedule("0 12 * * * ?"))
+                .withSchedule(CronScheduleBuilder.cronSchedule("10 18 18 * * ?"))
                 .startNow()
                 .build();
 
