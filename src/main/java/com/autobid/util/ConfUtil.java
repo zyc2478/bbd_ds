@@ -20,9 +20,6 @@ public class ConfUtil {
     //private static Logger logger = Logger.getLogger(ConfUtil.class);
 
     private static Properties prop = new OrderProperties();
-    //private static Reader in = new InputStreamReader(ConfUtil.class.getResourceAsStream("config.properties"));
-
-    //InputStream in = ConfUtil.class.getClassLoader().getResourceAsStream("Config.properties");
 
     private static String fileName = System.getProperty("user.dir") + "/config.properties";
 
