@@ -1,8 +1,10 @@
 package com.autobid.job;
 
 import com.autobid.model.BidList;
+import com.autobid.model.JobLog;
 import com.autobid.service.BidListService;
 import com.autobid.api.PPDApiService;
+import com.autobid.service.JobLogService;
 import com.autobid.util.DateUtil;
 import com.autobid.util.InitUtil;
 import com.autobid.util.JSONUtil;
@@ -38,6 +40,9 @@ public class BidListJob implements Job {
     @Resource
     private BidListService bidListService = null;
 
+    @Resource
+    private JobLogService jobLogService = null;
+
     public void init() {
         try {
             InitUtil.init();
@@ -63,26 +68,35 @@ public class BidListJob implements Job {
     public void fetchBidList(String startDate,String endDate) throws Exception {
         init();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf_detail = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date start_time = null;
+        Date end_time = null;
+        Date bidDate = sdf.parse(endDate);
+
         int pageIndex = 1, pageSize = 50;
         int bidCount;
+
+        start_time = new Date();
+
         do{
             //System.out.println("in while");
             bidCount = 0;
             JSONArray bidListArray = PPDApiService.bidList(token,startDate, endDate,pageIndex,pageSize);
-
             for(Object bidListObj:bidListArray){
 
                 JSONObject bidListJO = JSONObject.fromObject(bidListObj);
                 //System.out.println("bidListJO: " + bidListJO);
                 JSONObject transBidListJO = JSONUtil.transFirstLowerObj(bidListJO);
                 //System.out.println("transBidListJO: " + transBidListJO);
-                BidList bl = new BidList();
+
                 if(transBidListJO.getInt("listingId")!=0 && transBidListJO.get("title")!=null){
-                    Date bidDate = sdf.parse(endDate);
-                    bl =(BidList)JSONObject.toBean(transBidListJO,BidList.class);
+
+                    BidList bl =(BidList)JSONObject.toBean(transBidListJO,BidList.class);
                     bl.setBidDate(bidDate);
-                    System.out.println("bl: " + bl);
+                    // System.out.println("bl: " + bl);
+
                     System.out.println("insert " + bidListService.insertBidList(bl) + " record(s) in bid_list");
+
                 }
                 bidCount++;
                 System.out.println("bidCount:" + bidCount);
@@ -91,8 +105,19 @@ public class BidListJob implements Job {
             System.out.println("pageIndex: " + pageIndex);
 
         }while(bidCount == 50);
+
+        end_time = new Date();
+
         jedis.set("job_bid_list",endDate);
-        System.out.println("jedis job_bid_list value: " + endDate);
+
+        JobLog jobLog = new JobLog();
+        jobLog.setJob_name("bid_list" + "_" + endDate);
+        jobLog.setJob_type("bid_list");
+        jobLog.setRun_result("Successful");
+        jobLog.setStart_time(start_time);
+        jobLog.setEnd_time(end_time);
+
+        System.out.println("insert " + jobLogService.insertJobLog(jobLog) + " record(s) in job_log");
     }
 
     @Test
@@ -108,6 +133,20 @@ public class BidListJob implements Job {
         }else{
             fetchBidList(endDate,endDate);
         }
+    }
+
+    //@Test
+    public void testJobLogInsert() throws Exception {
+        JobLog jobLog = new JobLog();
+        jobLog.setJob_name("bid_list" + "_" + "2018-08-07");
+        jobLog.setJob_type("bid_list");
+        Date testDate = new Date();
+        jobLog.setRun_result("Successful");
+        jobLog.setStart_time(testDate);
+        jobLog.setEnd_time(testDate);
+
+        System.out.println("insert " + jobLogService.insertJobLog(jobLog) + " record(s) in job_log");
+
     }
     //@Test
     public void testFetchBidList() throws Exception {
