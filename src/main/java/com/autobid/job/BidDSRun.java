@@ -32,7 +32,8 @@ public class BidDSRun{
         // 调度工厂
         SchedulerFactory sf = new StdSchedulerFactory();
 
-        String cronDef = ConfUtil.getProperty("cronDef");
+        String cronDef = ConfUtil.getProperty("cron_def");
+
 
         // 从工厂中，获取一个任务调度实体
         Scheduler sched = sf.getScheduler();

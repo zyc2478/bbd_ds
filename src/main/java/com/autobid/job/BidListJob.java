@@ -75,7 +75,6 @@ public class BidListJob implements Job {
 
         int pageIndex = 1, pageSize = 50;
         int bidCount;
-
         start_time = new Date();
 
         do{
@@ -97,6 +96,8 @@ public class BidListJob implements Job {
 
                     System.out.println("insert " + bidListService.insertBidList(bl) + " record(s) in bid_list");
 
+                }else{
+                    logger.warning( bidDate + " 没有投标！");
                 }
                 bidCount++;
                 System.out.println("bidCount:" + bidCount);
@@ -107,7 +108,7 @@ public class BidListJob implements Job {
         }while(bidCount == 50);
 
         end_time = new Date();
-
+        System.out.println("end_time: "+ end_time);
         jedis.set("job_bid_list",endDate);
 
         JobLog jobLog = new JobLog();
@@ -122,13 +123,14 @@ public class BidListJob implements Job {
 
     @Test
     public void fetchEveryDay() throws Exception {
-        String startDate = jedis.get("job_bid_list");
-        System.out.println("get startDate: " + startDate);
+        String saveDate = jedis.get("job_bid_list");
+        System.out.println("get startDate: " + saveDate);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date today = new Date();
         Date yesterday = new Date(today.getTime() - 1000 * 24 * 3600);
         String endDate = sdf.format(yesterday);
-        if(startDate.equals(endDate)){
+        System.out.println("endDate:" + endDate);
+        if(saveDate.equals(endDate)){
             logger.warning("该日期已经执行过bid_list任务");
         }else{
             fetchBidList(endDate,endDate);
@@ -155,7 +157,7 @@ public class BidListJob implements Job {
         Date yesterday = new Date(today.getTime() - 1000 * 24 * 3600);
         String endDate = sdf.format(yesterday);
         System.out.println(endDate);*/
-        this.fetchBidList("2018-08-06","2018-08-06");
+        this.fetchBidList("2018-08-08","2018-08-08");
     }
 
     //@Test
