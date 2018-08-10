@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @Controller
 @RequestMapping("/vwBidList")
 public class VwBidListController {
@@ -34,4 +35,12 @@ public class VwBidListController {
 
         return vwBidSummary;
     }
+/*    @RequestMapping(value="/getVwBidList/{diffDays}", produces = "text/json; charset=utf-8")
+    @ResponseBody
+    public List<VwBidList> getBidList(@PathVariable int diffDays) {
+
+        List<VwBidList>  vwBidSummary = this.vwBidListService.getBidSummary(diffDays);
+
+        return vwBidSummary;
+    }*/
 }

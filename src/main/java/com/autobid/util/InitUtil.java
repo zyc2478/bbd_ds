@@ -1,12 +1,5 @@
 package com.autobid.util;
 
-/**
- * @author Richard Zeng
- * @ClassName: InitUtil
- * @Description: 认证初始化程序，token每7天就会失效，需要定时刷新
- * @Date 2018年1月10日 下午5:11:30
- */
-
 import com.ppdai.open.core.OpenApiClient;
 import com.ppdai.open.core.RsaCryptoHelper;
 import redis.clients.jedis.Jedis;
@@ -16,7 +9,6 @@ import redis.clients.jedis.Jedis;
  * 跳转到AC的oauth2.0联合登录
  * https://ac.ppdai.com/oauth2/login?AppID=7344c77f9a7f4f249bd9df04115171e6&ReturnUrl=http://bidbydebt.com/auth/gettoken
  * <p>
- * 登录成功后 oauth2.0 跳转到http://bidbydebt.com/auth/gettoken?code=c903ccbbe24549c0b603d1f172b4f149
  */
 
 public class InitUtil {
@@ -37,19 +29,7 @@ public class InitUtil {
         int redisPort = Integer.parseInt(confBean.getRedisPort());
 
         jedis = new Jedis(redisHost, redisPort);
-/*
-        //如果TokenInit配置项不存在，则初始化Token，存储在Redis中
-        if (TokenUtil.determineTokenInitExists()) {
-            TokenInit.initToken();
-        }
-        //如果Token快到期，则获取一个新Token
-        if (TokenUtil.determineRefreshDate()) {
-            TokenUtil.genNewToken();
-        }*/
-        //获取Token，配置文件有则优先，没有则获取Redis
         token = TokenUtil.getToken();
-        //logger.info("token:" + token);
-        //String balanceJson = BidService.queryBalanceService(token);
     }
     public static String getToken(){
         return token ;
