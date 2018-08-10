@@ -34,8 +34,6 @@ public class BidDSRun{
 
         String cronDef = ConfUtil.getProperty("cronDef");
 
-        int runInterval = Integer.parseInt(ConfUtil.getProperty("run_interval"));
-
         // 从工厂中，获取一个任务调度实体
         Scheduler sched = sf.getScheduler();
 
