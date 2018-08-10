@@ -6,6 +6,7 @@ public class ConfBean {
     private String bidMode;
     private String redisHost;
     private String redisPort;
+    private String cronDef;
     private String debtMix;
     private String debtOverdueSwitch;
     private String debtSaleRate;
@@ -63,6 +64,11 @@ public class ConfBean {
 
     public ConfBean() {
     }
+
+
+    public void setCronDef(String cronDef) { this.cronDef = cronDef; }
+
+    public String getCronDef() { return cronDef; }
 
     public String getDebtMaxGroups() {
         return debtMaxGroups;

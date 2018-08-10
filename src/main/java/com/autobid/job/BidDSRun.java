@@ -32,6 +32,8 @@ public class BidDSRun{
         // 调度工厂
         SchedulerFactory sf = new StdSchedulerFactory();
 
+        String cronDef = ConfUtil.getProperty("cronDef");
+
         int runInterval = Integer.parseInt(ConfUtil.getProperty("run_interval"));
 
         // 从工厂中，获取一个任务调度实体
@@ -44,7 +46,7 @@ public class BidDSRun{
                 .build();
         // 每天12点整运行
         Trigger trigger = TriggerBuilder.newTrigger().withIdentity("simple", "group")
-                .withSchedule(CronScheduleBuilder.cronSchedule("10 18 18 * * ?"))
+                .withSchedule(CronScheduleBuilder.cronSchedule(cronDef))
                 .startNow()
                 .build();
 
