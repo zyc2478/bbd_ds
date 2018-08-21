@@ -13,7 +13,8 @@ public class PPDApiService {
     private static Logger logger = Logger.getLogger(PPDApiService.class);
 
     public static JSONArray bidList(String token, String startTime, String endTime, int pageIndex, int pageSize) throws Exception {
-        String url = "https://openapi.ppdai.com/invest/BidService/BidList";
+        //String url = "https://openapi.ppdai.com/invest/BidService/BidList";
+        String url = "https://openapi.ppdai.com/bid/openapi/bidList";
         Result result = OpenApiClient.send(url, token,
                 new PropertyObject("StartTime",startTime, ValueTypeEnum.DateTime),
                 new PropertyObject("EndTime",endTime, ValueTypeEnum.DateTime),

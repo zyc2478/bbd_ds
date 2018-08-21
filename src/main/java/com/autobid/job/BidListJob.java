@@ -92,7 +92,7 @@ public class BidListJob implements Job {
 
                     BidList bl =(BidList)JSONObject.toBean(transBidListJO,BidList.class);
                     bl.setBidDate(bidDate);
-                    // System.out.println("bl: " + bl);
+                    //System.out.println("bl: " + bl);
 
                     System.out.println("insert " + bidListService.insertBidList(bl) + " record(s) in bid_list");
 
@@ -121,7 +121,7 @@ public class BidListJob implements Job {
         System.out.println("insert " + jobLogService.insertJobLog(jobLog) + " record(s) in job_log");
     }
 
-    @Test
+   //@Test
     public void fetchEveryDay() throws Exception {
         String saveDate = jedis.get("job_bid_list");
         System.out.println("get startDate: " + saveDate);
@@ -137,6 +137,8 @@ public class BidListJob implements Job {
         }
     }
 
+
+
     //@Test
     public void testJobLogInsert() throws Exception {
         JobLog jobLog = new JobLog();
@@ -150,14 +152,28 @@ public class BidListJob implements Job {
         System.out.println("insert " + jobLogService.insertJobLog(jobLog) + " record(s) in job_log");
 
     }
-    //@Test
-    public void testFetchBidList() throws Exception {
+    @Test
+    public void fetchSomeDays() throws Exception {
 /*        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date today = new Date();
         Date yesterday = new Date(today.getTime() - 1000 * 24 * 3600);
         String endDate = sdf.format(yesterday);
         System.out.println(endDate);*/
-        this.fetchBidList("2018-08-08","2018-08-08");
+
+        String start = "2018-08-11";
+        String end = "2018-08-20";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date startDate = sdf.parse(start);
+        Date endDate = sdf.parse(end);
+        long diff = (endDate.getTime() - startDate.getTime())/1000/3600/24;
+        System.out.println("diff:" + diff);
+
+        for(int i=0;i<diff+1;i++){
+            Date runDate = new Date(startDate.getTime()+ 1000 * 24 * 3600 * i);
+            String dateStr = sdf.format(runDate);
+            System.out.println("投标日期：" + dateStr);
+            this.fetchBidList(dateStr,dateStr);
+        }
     }
 
     //@Test
