@@ -21,8 +21,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import redis.clients.jedis.Jedis;
 
 import javax.annotation.Resource;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Logger;
 
 @RunWith(SpringJUnit4ClassRunner.class)     //表示继承了SpringJUnit4ClassRunner类
@@ -58,7 +60,7 @@ public class BidListJob implements Job {
         String today = sdf.format(new Date());
         try {
             //this.fetchBidList(today,today);
-            this.fetchEveryDay();
+            this.fetchDaysUntilNow();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -121,20 +123,51 @@ public class BidListJob implements Job {
         System.out.println("insert " + jobLogService.insertJobLog(jobLog) + " record(s) in job_log");
     }
 
-   //@Test
-    public void fetchEveryDay() throws Exception {
+   @Test
+    public void fetchDaysUntilNow() throws Exception {
         String saveDate = jedis.get("job_bid_list");
         System.out.println("get startDate: " + saveDate);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
         Date today = new Date();
         Date yesterday = new Date(today.getTime() - 1000 * 24 * 3600);
-        String endDate = sdf.format(yesterday);
-        System.out.println("endDate:" + endDate);
-        if(saveDate.equals(endDate)){
-            logger.warning("该日期已经执行过bid_list任务");
-        }else{
-            fetchBidList(endDate,endDate);
+        String lastDateStr = sdf.format(yesterday);
+        //lastDateStr = "2018-8-27";
+        Date lastDate = sdf.parse(lastDateStr);
+        Date maxDate = bidListService.queryMaxBidDate();
+        Date beginDate = DateUtil.calcBeginDate(maxDate,-1);
+
+        int diffDays = DateUtil.differentDaysByMillisecond(beginDate,new Date());
+        System.out.println("diffDays: " + diffDays);
+
+/*        String runDateStr = "2018-09-02";
+        Date runDate = sdf.parse(runDateStr);
+        List<BidList> bidLists = bidListService.queryBidDate(runDate);
+        System.out.println(bidLists);*/
+
+        for(int i = 0; i < diffDays; i++){
+            String runDateStr = sdf.format(beginDate);
+            System.out.println("runDateStr:" + runDateStr);
+            Date runDate = sdf.parse(runDateStr);
+            System.out.println(runDate);
+            List<BidList> bidLists = bidListService.queryBidDate(sdf.parse(runDateStr));
+            System.out.println(bidLists);
+            if(bidLists.size()!=0){
+                System.out.println("数据库已有该日期的记录，共" + bidLists.size() + "条");
+            }else if(saveDate.equals(lastDate)){
+                logger.warning("该日期已经执行过bid_list任务");
+            }else{
+                System.out.println("start running, date is : " + runDateStr);
+                this.fetchBidList(runDateStr,runDateStr);
+            }
+
+            beginDate = DateUtil.calcBeginDate(beginDate,-1);
         }
+
+
+        List<BidList> bidLists = bidListService.queryBidDate(lastDate);
+        System.out.println(bidLists);
+
     }
 
 
@@ -152,7 +185,7 @@ public class BidListJob implements Job {
         System.out.println("insert " + jobLogService.insertJobLog(jobLog) + " record(s) in job_log");
 
     }
-    @Test
+    //@Test
     public void fetchSomeDays() throws Exception {
 /*        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date today = new Date();
@@ -160,8 +193,8 @@ public class BidListJob implements Job {
         String endDate = sdf.format(yesterday);
         System.out.println(endDate);*/
 
-        String start = "2018-08-11";
-        String end = "2018-08-20";
+        String start = "2018-08-21";
+        String end = "2018-08-28";
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date startDate = sdf.parse(start);
         Date endDate = sdf.parse(end);

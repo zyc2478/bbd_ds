@@ -9,9 +9,12 @@ import javax.persistence.Table;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
+
 /**
  * BidListDAO继承基类
  */
 @Repository
 public interface BidListDAO extends MyBatisBaseDao<BidList, Integer, BidListExample> {
+    Date queryMaxBidDate();
 }
