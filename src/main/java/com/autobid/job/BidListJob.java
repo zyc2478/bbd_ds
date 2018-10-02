@@ -5,10 +5,7 @@ import com.autobid.model.JobLog;
 import com.autobid.service.BidListService;
 import com.autobid.api.PPDApiService;
 import com.autobid.service.JobLogService;
-import com.autobid.util.DateUtil;
-import com.autobid.util.InitUtil;
-import com.autobid.util.JSONUtil;
-import com.autobid.util.RedisUtil;
+import com.autobid.util.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.junit.Test;
@@ -21,6 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import redis.clients.jedis.Jedis;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -123,10 +121,25 @@ public class BidListJob implements Job {
         System.out.println("insert " + jobLogService.insertJobLog(jobLog) + " record(s) in job_log");
     }
 
-   @Test
+    @Test
+    public void executeJob() throws Exception {
+        String initMode = ConfUtil.getProperty("init_mode");
+        if( initMode.equals("1")){
+            String initBegin = ConfUtil.getProperty("init_begin");
+            String initEnd = ConfUtil.getProperty("init_end");
+            fetchSomeDays(initBegin,initEnd);
+        } else if( initMode.equals("0")){
+            fetchDaysUntilNow();
+        } else {
+            System.out.println("initMode in configuration must equals 0 or 1 !");
+        }
+    }
+
+   //@Test
     public void fetchDaysUntilNow() throws Exception {
+
         String saveDate = jedis.get("job_bid_list");
-        System.out.println("get startDate: " + saveDate);
+        System.out.println("get saveDate: " + saveDate);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
         Date today = new Date();
@@ -136,7 +149,7 @@ public class BidListJob implements Job {
         Date lastDate = sdf.parse(lastDateStr);
         Date maxDate = bidListService.queryMaxBidDate();
         Date beginDate = DateUtil.calcBeginDate(maxDate,-1);
-
+        System.out.println(sdf.format(beginDate));
         int diffDays = DateUtil.differentDaysByMillisecond(beginDate,new Date());
         System.out.println("diffDays: " + diffDays);
 
@@ -186,15 +199,15 @@ public class BidListJob implements Job {
 
     }
     //@Test
-    public void fetchSomeDays() throws Exception {
+    public void fetchSomeDays(String beginDateInput,String endDateInput) throws Exception {
 /*        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date today = new Date();
         Date yesterday = new Date(today.getTime() - 1000 * 24 * 3600);
         String endDate = sdf.format(yesterday);
         System.out.println(endDate);*/
 
-        String start = "2018-08-21";
-        String end = "2018-08-28";
+        String start = beginDateInput;
+        String end = endDateInput;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date startDate = sdf.parse(start);
         Date endDate = sdf.parse(end);

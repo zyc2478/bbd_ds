@@ -36,7 +36,7 @@ public final class RedisUtil {
             String redisHost = ConfUtil.getProperty("redis_host");
             int redisPort = Integer.parseInt(ConfUtil.getProperty("redis_port"));
 
-            jedisPool=new JedisPool(config,redisHost,new Integer(redisPort),600);
+            jedisPool=new JedisPool(config,redisHost,new Integer(redisPort),100000);
             //jedisPool = new JedisPool(config, ADDR, PORT, TIMEOUT, AUTH);
             //String ADDR = "localhost";
             //jedisPool = new JedisPool(config, ADDR);
