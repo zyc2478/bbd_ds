@@ -35,7 +35,7 @@ management:
 # 开发环境配置
 spring:
   profiles: dev
-  redis:cd
+  redis:
     host: 59.110.169.156
     port: 6379
   datasource:
