@@ -61,6 +61,7 @@
           <include>**/*.xml</include>
           <include>**/**/*.xml</include>
           <include>*.properties</include>
+          <include>**/*.yml</include>
         </includes>
       </resource>
     </resources>
