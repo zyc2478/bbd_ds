@@ -3,7 +3,6 @@ package com.autobid.dao;
 import com.autobid.model.BidList;
 import com.autobid.model.BidListExample;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 
