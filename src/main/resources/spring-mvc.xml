@@ -75,4 +75,57 @@
         <property name="maxInMemorySize" value="40960" />
     </bean>
 
+    <!-- 启动触发器的配置开始 -->
+    <bean name="startQuertz" lazy-init="false" autowire="no"
+          class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="myJobTrigger" />
+            </list>
+        </property>
+    </bean>
+    <!-- 启动触发器的配置结束 -->
+
+    <!-- 调度的配置开始 -->
+    <!--
+        quartz-1.8以前的配置
+    <bean id="myJobTrigger"
+        class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="myJobDetail" />
+        </property>
+        <property name="cronExpression">
+            <value>0/1 * * * * ?</value>
+        </property>
+    </bean>
+    -->
+    <!-- quartz-2.x的配置 -->
+    <bean id="myJobTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail">
+            <ref bean="myJobDetail" />
+        </property>
+        <property name="cronExpression">
+            <value> */30 * * * * ?</value>
+        </property>
+    </bean>
+    <!-- 调度的配置结束 -->
+
+    <!-- job的配置开始 -->
+    <bean id="myJobDetail"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject">
+            <ref bean="bidListJob" />
+        </property>
+        <property name="targetMethod">
+            <value>executeJob</value>
+        </property>
+    </bean>
+    <!-- job的配置结束 -->
+
+<!--    &lt;!&ndash; 工作的bean &ndash;&gt;
+    <bean id="bidListJob" class="com.autobid.job.BidListJob" />
+    &lt;!&ndash; 工作的bean &ndash;&gt;
+    <bean id="bidListController" class="com.autobid.controller.BidListController" />-->
+
 </beans>

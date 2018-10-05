@@ -1,8 +1,6 @@
 package com.autobid.util;
 
 import org.apache.log4j.Logger;
-import org.junit.jupiter.api.Test;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -43,7 +41,7 @@ public class DateUtil {
         return date2;
     }
 
-    @Test
+    //@Test
     public void testDateUtil() throws ParseException {
         DateUtil du = new DateUtil();
         Date nowDate = new Date();

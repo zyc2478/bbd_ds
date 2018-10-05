@@ -1,3 +1,4 @@
+/*
 package com.autobid.job;
 
 //import org.apache.log4j.Logger;
@@ -9,12 +10,14 @@ import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
 
+*/
 /**
  * @Author Richard Zeng
  * @ClassName: BidDSRun
  * @Description: 定时运行服务，在这里配置定时任务
  * @Date 2018年2月17日 下午10:04:40
- */
+ *//*
+
 
 @SuppressWarnings("deprecation")
 public class BidDSRun{
@@ -55,4 +58,4 @@ public class BidDSRun{
 
     }
 
-}
+}*/

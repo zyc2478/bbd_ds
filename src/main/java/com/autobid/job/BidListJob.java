@@ -1,47 +1,50 @@
 package com.autobid.job;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.autobid.model.BidList;
 import com.autobid.model.JobLog;
 import com.autobid.service.BidListService;
 import com.autobid.api.PPDApiService;
 import com.autobid.service.JobLogService;
 import com.autobid.util.*;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 
 import javax.annotation.Resource;
-import java.io.IOException;
-import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
-@RunWith(SpringJUnit4ClassRunner.class)     //表示继承了SpringJUnit4ClassRunner类
-@ContextConfiguration(locations = {"classpath:spring-mybatis.xml"})
+//@RunWith(SpringJUnit4ClassRunner.class)     //表示继承了SpringJUnit4ClassRunner类
+//@ContextConfiguration(locations = {"classpath:spring-mybatis.xml"})
 
-public class BidListJob implements Job {
 
-    private static Logger logger = Logger.getLogger("PPDService.class");
+@Component
+@EnableScheduling
+
+public class BidListJob{
+
+    private static Logger logger = Logger.getLogger("BidListJob.class");
 
     private static String token = "";
 
     Jedis jedis = RedisUtil.getJedis();
 
 
-    @Resource
-    private BidListService bidListService = null;
+    @Autowired
+    private BidListService bidListService ;
 
     @Resource
-    private JobLogService jobLogService = null;
+    private JobLogService jobLogService ;
 
     public void init() {
         try {
@@ -52,17 +55,14 @@ public class BidListJob implements Job {
         }
     }
 
-    @Override
+/*    @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String today = sdf.format(new Date());
         try {
-            //this.fetchBidList(today,today);
-            this.fetchDaysUntilNow();
+            this.executeJob();
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
 
     public void fetchBidList(String startDate,String endDate) throws Exception {
@@ -78,6 +78,37 @@ public class BidListJob implements Job {
         start_time = new Date();
 
         do{
+            //System.out.println("in while");
+            bidCount = 0;
+            JSONArray bidListArray = PPDApiService.bidList(token,startDate, endDate,pageIndex,pageSize);
+            for(Object bidListObj:bidListArray){
+
+                JSONObject bidListJO = JSONObject.parseObject(bidListObj.toString());
+                //System.out.println("bidListJO: " + bidListJO);
+                JSONObject transBidListJO = JSONUtil.transFirstLowerObj(bidListJO);
+                //System.out.println("transBidListJO: " + transBidListJO);
+                System.out.println(bidListJO);
+
+                if(transBidListJO.getIntValue("listingId")!=0 && transBidListJO.getString("title")!=null){
+
+                    BidList bl = JSONObject.toJavaObject(transBidListJO,BidList.class);
+                    bl.setBidDate(bidDate);
+                    //System.out.println("bl: " + bl);
+
+                    System.out.println("insert " + bidListService.insertBidList(bl) + " record(s) in bid_list");
+
+                }else{
+                    logger.warning( bidDate + " 没有投标！");
+                }
+                bidCount++;
+                System.out.println("bidCount:" + bidCount);
+            }
+            pageIndex++;
+            System.out.println("pageIndex: " + pageIndex);
+
+        }while(bidCount == 50);
+
+        /*do{
             //System.out.println("in while");
             bidCount = 0;
             JSONArray bidListArray = PPDApiService.bidList(token,startDate, endDate,pageIndex,pageSize);
@@ -105,7 +136,7 @@ public class BidListJob implements Job {
             pageIndex++;
             System.out.println("pageIndex: " + pageIndex);
 
-        }while(bidCount == 50);
+        }while(bidCount == 50);*/
 
         end_time = new Date();
         System.out.println("end_time: "+ end_time);
