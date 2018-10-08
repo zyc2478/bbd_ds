@@ -41,20 +41,13 @@ spring:
   datasource:
     url: jdbc:mysql://59.110.169.156:3306/bbd?useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;rewriteBatchedStatements=TRUE&amp;useSSL=false&amp;serverTimezone=UTC
 
-myProps: #自定义的属性和值
-  simpleProp: simplePropValue
-  arrayProps: 1,2,3,4,5
-  listProp1:
-    - name: abc
-      value: abcValue
-    - name: efg
-      value: efgValue
-  listProp2:
-    - config2Value1
-    - config2Vavlue2
-  mapProps:
-    key1: value1
-    key2: value2
+init: #自定义的属性和值
+  mode: 0
+  begin: 2018-09-21
+  end: 2018-09-30
+
+job:
+  cron: 0/10 * * * * ?
 
 ---
 # 测试环境配置

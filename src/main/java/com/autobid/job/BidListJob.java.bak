@@ -1,52 +1,38 @@
+/*
 package com.autobid.job;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.autobid.api.PPDApiService;
 import com.autobid.model.BidList;
 import com.autobid.model.JobLog;
 import com.autobid.service.BidListService;
+import com.autobid.api.PPDApiService;
 import com.autobid.service.JobLogService;
 import com.autobid.util.*;
 import org.junit.Test;
-import org.quartz.JobDataMap;
+import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
+//@RunWith(SpringJUnit4ClassRunner.class)     //表示继承了SpringJUnit4ClassRunner类
+//@ContextConfiguration(locations = {"classpath:spring-mybatis.xml"})
+
+
 @Component
 @EnableScheduling
-@Service
-public class BidListJob extends QuartzJobBean {
-    // 该类必须为public修饰
-    // 该类必须含有空参数的构造器
 
-    @Value("${init.mode}")
-    private String initMode;
-
-    @Value("${init.begin}")
-    private String initBegin;
-
-    @Value("${init.end}")
-    private String initEnd;
-
-    @Autowired
-    private BidListService bidListService ;
-
-    @Autowired
-    private JobLogService jobLogService ;
+public class BidListJob{
 
     private static Logger logger = Logger.getLogger("BidListJob.class");
 
@@ -54,28 +40,12 @@ public class BidListJob extends QuartzJobBean {
 
     Jedis jedis = RedisUtil.getJedis();
 
-    @Override
-    protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
-        // 传入的参数
-        JobDataMap params = context.getJobDetail().getJobDataMap();
 
-        //业务逻辑
-        if( initMode.equals("1")){
-            try {
-                fetchSomeDays(initBegin,initEnd);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else if( initMode.equals("0")){
-            try {
-                fetchDaysUntilNow();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            System.out.println("initMode in configuration must equals 0 or 1 !");
-        }
-    }
+    @Autowired
+    private BidListService bidListService ;
+
+    @Resource
+    private JobLogService jobLogService ;
 
     public void init() {
         try {
@@ -85,6 +55,17 @@ public class BidListJob extends QuartzJobBean {
             e.printStackTrace();
         }
     }
+
+*/
+/*    @Override
+    public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+        try {
+            this.executeJob();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }*//*
+
 
 
     public void fetchBidList(String startDate,String endDate) throws Exception {
@@ -130,6 +111,38 @@ public class BidListJob extends QuartzJobBean {
 
         }while(bidCount == 50);
 
+        */
+/*do{
+            //System.out.println("in while");
+            bidCount = 0;
+            JSONArray bidListArray = PPDApiService.bidList(token,startDate, endDate,pageIndex,pageSize);
+            for(Object bidListObj:bidListArray){
+
+                JSONObject bidListJO = JSONObject.fromObject(bidListObj);
+                //System.out.println("bidListJO: " + bidListJO);
+                JSONObject transBidListJO = JSONUtil.transFirstLowerObj(bidListJO);
+                //System.out.println("transBidListJO: " + transBidListJO);
+
+                if(transBidListJO.getInt("listingId")!=0 && transBidListJO.get("title")!=null){
+
+                    BidList bl =(BidList)JSONObject.toBean(transBidListJO,BidList.class);
+                    bl.setBidDate(bidDate);
+                    //System.out.println("bl: " + bl);
+
+                    System.out.println("insert " + bidListService.insertBidList(bl) + " record(s) in bid_list");
+
+                }else{
+                    logger.warning( bidDate + " 没有投标！");
+                }
+                bidCount++;
+                System.out.println("bidCount:" + bidCount);
+            }
+            pageIndex++;
+            System.out.println("pageIndex: " + pageIndex);
+
+        }while(bidCount == 50);*//*
+
+
         end_time = new Date();
         System.out.println("end_time: "+ end_time);
         jedis.set("job_bid_list",endDate);
@@ -144,7 +157,21 @@ public class BidListJob extends QuartzJobBean {
         System.out.println("insert " + jobLogService.insertJobLog(jobLog) + " record(s) in job_log");
     }
 
-    //@Test
+    @Test
+    public void executeJob() throws Exception {
+        String initMode = ConfUtil.getProperty("init_mode");
+        if( initMode.equals("1")){
+            String initBegin = ConfUtil.getProperty("init_begin");
+            String initEnd = ConfUtil.getProperty("init_end");
+            fetchSomeDays(initBegin,initEnd);
+        } else if( initMode.equals("0")){
+            fetchDaysUntilNow();
+        } else {
+            System.out.println("initMode in configuration must equals 0 or 1 !");
+        }
+    }
+
+   //@Test
     public void fetchDaysUntilNow() throws Exception {
 
         String saveDate = jedis.get("job_bid_list");
@@ -164,8 +191,15 @@ public class BidListJob extends QuartzJobBean {
         System.out.println("diffDays: " + diffDays);
 
         if(diffDays==0){
-            System.out.println("数据库已有日期"+maxDate+"的记录");
+            System.out.println("数据库已有日期"+beginDate+"的记录");
         }
+
+*/
+/*        String runDateStr = "2018-09-02";
+        Date runDate = sdf.parse(runDateStr);
+        List<BidList> bidLists = bidListService.queryBidDate(runDate);
+        System.out.println(bidLists);*//*
+
 
         for(int i = 0; i < diffDays; i++){
             String runDateStr = sdf.format(beginDate);
@@ -185,8 +219,14 @@ public class BidListJob extends QuartzJobBean {
 
             beginDate = DateUtil.calcBeginDate(beginDate,-1);
         }
+
+
         List<BidList> bidLists = bidListService.queryBidDate(lastDate);
+        //System.out.println(bidLists);
+
     }
+
+
 
     //@Test
     public void testJobLogInsert() throws Exception {
@@ -203,6 +243,13 @@ public class BidListJob extends QuartzJobBean {
     }
     //@Test
     public void fetchSomeDays(String beginDateInput,String endDateInput) throws Exception {
+*/
+/*        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date today = new Date();
+        Date yesterday = new Date(today.getTime() - 1000 * 24 * 3600);
+        String endDate = sdf.format(yesterday);
+        System.out.println(endDate);*//*
+
 
         String start = beginDateInput;
         String end = endDateInput;
@@ -237,4 +284,6 @@ public class BidListJob extends QuartzJobBean {
         }
     }
 
+
 }
+*/

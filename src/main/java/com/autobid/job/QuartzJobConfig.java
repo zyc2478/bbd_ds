@@ -1,3 +1,4 @@
+/*
 package com.autobid.job;
 
 import com.autobid.util.ConfUtil;
@@ -12,9 +13,11 @@ import java.io.IOException;
 @Configuration
 public class QuartzJobConfig {
 
-    /**
+    */
+/**
      * 方法调用任务明细工厂Bean
-     */
+     *//*
+
     @Bean(name = "bidListJobBean")
     public MethodInvokingJobDetailFactoryBean bidListJobBean(BidListJob bidListJob) {
         MethodInvokingJobDetailFactoryBean jobDetail = new MethodInvokingJobDetailFactoryBean();
@@ -27,9 +30,11 @@ public class QuartzJobConfig {
     }
 
 
-    /**
+    */
+/**
      * 表达式触发器工厂Bean
-     */
+     *//*
+
     @Bean(name = "bidListJobTrigger")
     public CronTriggerFactoryBean bidListJobTrigger(@Qualifier("bidListJobBean") MethodInvokingJobDetailFactoryBean bidListJobBean) throws IOException {
         CronTriggerFactoryBean tigger = new CronTriggerFactoryBean();
@@ -40,9 +45,14 @@ public class QuartzJobConfig {
         return tigger;
     }
 
- /*   *//**
+ */
+/*   *//*
+*/
+/**
      * 方法调用任务明细工厂Bean
      *//*
+*/
+/*
     @Bean(name = "myFirstExerciseJobBean")
     public MethodInvokingJobDetailFactoryBean myFirstExerciseJobBean(MyFirstExerciseJob myFirstExerciseJob) {
         MethodInvokingJobDetailFactoryBean jobDetail = new MethodInvokingJobDetailFactoryBean();
@@ -54,9 +64,13 @@ public class QuartzJobConfig {
         return jobDetail;
     }
 
-    *//**
+    *//*
+*/
+/**
      * 表达式触发器工厂Bean
      *//*
+*/
+/*
     @Bean(name = "myFirstExerciseJobTrigger")
     public CronTriggerFactoryBean myFirstExerciseJobTrigger(@Qualifier("myFirstExerciseJobBean") MethodInvokingJobDetailFactoryBean myFirstExerciseJobBean) {
         CronTriggerFactoryBean tigger = new CronTriggerFactoryBean();
@@ -66,9 +80,13 @@ public class QuartzJobConfig {
         return tigger;
     }
 
-    *//**
+    *//*
+*/
+/**
      * 方法调用任务明细工厂Bean
      *//*
+*/
+/*
     @Bean(name = "mySecondExerciseJobBean")
     public MethodInvokingJobDetailFactoryBean mySecondExerciseJobBean(MySecondExerciseJob mySecondExerciseJob) {
         MethodInvokingJobDetailFactoryBean jobDetail = new MethodInvokingJobDetailFactoryBean();
@@ -80,9 +98,13 @@ public class QuartzJobConfig {
         return jobDetail;
     }
 
-    *//**
+    *//*
+*/
+/**
      * 表达式触发器工厂Bean
      *//*
+*/
+/*
     @Bean(name = "mySecondExerciseJobTrigger")
     public CronTriggerFactoryBean mySecondExerciseJobTrigger(@Qualifier("mySecondExerciseJobBean") MethodInvokingJobDetailFactoryBean mySecondExerciseJobDetailFactoryBean) {
         CronTriggerFactoryBean tigger = new CronTriggerFactoryBean();
@@ -90,6 +112,7 @@ public class QuartzJobConfig {
         tigger.setCronExpression("0/10 * * * * ?"); // 什么是否触发，Spring Scheduler Cron表达式
         tigger.setName("general-mySecondExerciseJobTrigger");
         return tigger;
-    }*/
+    }*//*
 
-}
+
+}*/
