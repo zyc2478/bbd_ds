@@ -3,6 +3,7 @@ package com.autobid.service;
 import com.autobid.dao.BidListDAO;
 import com.autobid.model.BidList;
 import com.autobid.model.BidListExample;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -10,10 +11,12 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
-@Service("bidListService")
+//@Service("bidListService")
+@Service
 public class BidListServiceImpl implements BidListService {
 
-    @Resource
+    //@Resource
+    @Autowired
     private BidListDAO bidListDao;
 
     @Override

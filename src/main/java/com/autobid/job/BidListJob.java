@@ -31,8 +31,8 @@ import java.util.logging.Logger;
 /*@EnableScheduling
 @Service*/
 //@Bean
-public class BidListJob {
-//public class BidListJob extends QuartzJobBean  {
+//public class BidListJob {
+public class BidListJob extends QuartzJobBean  {
 
     // 该类必须为public修饰
     // 该类必须含有空参数的构造器
@@ -58,7 +58,7 @@ public class BidListJob {
 
     Jedis jedis = RedisUtil.getJedis();
 
-    //@Override
+    @Override
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
         // 传入的参数
         JobDataMap params = context.getJobDetail().getJobDataMap();
@@ -86,6 +86,7 @@ public class BidListJob {
     }
 
     public void execute() throws Exception {
+        //executeInternal(null);
         //System.out.println("initMode=" + initMode);
         //fetchDaysUntilNow();
         //System.out.println("The bidList json is : " + bidListService.getBidListByListingId(62068730));
