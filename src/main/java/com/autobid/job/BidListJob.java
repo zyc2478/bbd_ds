@@ -9,6 +9,7 @@ import com.autobid.service.BidListService;
 import com.autobid.service.JobLogService;
 import com.autobid.util.*;
 import org.junit.Test;
+import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -22,17 +23,18 @@ import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 
 import javax.annotation.Resource;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
-@Component
+//@Component
 /*@EnableScheduling
 @Service*/
 //@Bean
 //public class BidListJob {
-public class BidListJob extends QuartzJobBean  {
+public class BidListJob implements Job,Serializable {
 
     // 该类必须为public修饰
     // 该类必须含有空参数的构造器
@@ -59,7 +61,7 @@ public class BidListJob extends QuartzJobBean  {
     Jedis jedis = RedisUtil.getJedis();
 
     @Override
-    protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
+    public void execute(JobExecutionContext context) throws JobExecutionException {
         // 传入的参数
         JobDataMap params = context.getJobDetail().getJobDataMap();
 
@@ -67,30 +69,7 @@ public class BidListJob extends QuartzJobBean  {
         //System.out.println("The Job will starting!");
 
         //System.out.println("The result is: " + bidListService.getBidListByListingId(62068730));
-/*        if( initMode.equals("1")){
-            try {
-                fetchSomeDays(initBegin,initEnd);
-                //bidListService.getBidListByListingId(62068730);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else if( initMode.equals("0")){
-            try {
-                fetchDaysUntilNow();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            System.out.println("initMode in configuration must equals 0 or 1 !");
-        }*/
-    }
-
-    public void execute() throws Exception {
-        //executeInternal(null);
-        //System.out.println("initMode=" + initMode);
-        //fetchDaysUntilNow();
-        //System.out.println("The bidList json is : " + bidListService.getBidListByListingId(62068730));
-        if(initMode.equals("1")){
+        if( initMode.equals("1")){
             try {
                 fetchSomeDays(initBegin,initEnd);
                 //bidListService.getBidListByListingId(62068730);
@@ -106,6 +85,14 @@ public class BidListJob extends QuartzJobBean  {
         } else {
             System.out.println("initMode in configuration must equals 0 or 1 !");
         }
+    }
+
+    public void executeJob() throws Exception {
+        execute(null);
+        //executeInternal(null);
+        //System.out.println("initMode=" + initMode);
+        //fetchDaysUntilNow();
+        //System.out.println("The bidList json is : " + bidListService.getBidListByListingId(62068730));
     }
 
     public void init() {
