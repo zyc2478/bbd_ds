@@ -14,6 +14,7 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.stereotype.Component;
@@ -27,13 +28,16 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @Component
-@EnableScheduling
-@Service
-public class BidListJob extends QuartzJobBean {
+/*@EnableScheduling
+@Service*/
+//@Bean
+public class BidListJob {
+//public class BidListJob extends QuartzJobBean  {
+
     // 该类必须为public修饰
     // 该类必须含有空参数的构造器
 
-    @Value("${init.mode}")
+    @Value("${'init.mode'}")
     private String initMode;
 
     @Value("${init.begin}")
@@ -54,15 +58,19 @@ public class BidListJob extends QuartzJobBean {
 
     Jedis jedis = RedisUtil.getJedis();
 
-    @Override
+    //@Override
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
         // 传入的参数
         JobDataMap params = context.getJobDetail().getJobDataMap();
 
         //业务逻辑
-        if( initMode.equals("1")){
+        //System.out.println("The Job will starting!");
+
+        //System.out.println("The result is: " + bidListService.getBidListByListingId(62068730));
+/*        if( initMode.equals("1")){
             try {
                 fetchSomeDays(initBegin,initEnd);
+                //bidListService.getBidListByListingId(62068730);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -74,7 +82,29 @@ public class BidListJob extends QuartzJobBean {
             }
         } else {
             System.out.println("initMode in configuration must equals 0 or 1 !");
-        }
+        }*/
+    }
+
+    public void execute() throws Exception {
+        System.out.println("initMode=" + initMode);
+        //fetchDaysUntilNow();
+        System.out.println("The bidList json is : " + bidListService.getBidListByListingId(62068730));
+/*        if(initMode.equals("1")){
+            try {
+                fetchSomeDays(initBegin,initEnd);
+                //bidListService.getBidListByListingId(62068730);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if( initMode.equals("0")){
+            try {
+                fetchDaysUntilNow();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("initMode in configuration must equals 0 or 1 !");
+        }*/
     }
 
     public void init() {

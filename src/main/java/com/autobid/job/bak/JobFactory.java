@@ -1,11 +1,12 @@
-package com.autobid.job;
+package com.autobid.job.bak;
 
 import org.quartz.spi.TriggerFiredBundle;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.quartz.AdaptableJobFactory;
 import org.springframework.stereotype.Component;
 
-// 解决SpringBoot不能再Quartz中注入Bean的问题
+// 解决SpringBoot不能在Quartz中注入Bean的问题
 @Component
 public class JobFactory extends AdaptableJobFactory {
     /**

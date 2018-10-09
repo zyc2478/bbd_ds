@@ -1,3 +1,4 @@
+/*
 package com.autobid.job;
 
 import org.quartz.*;
@@ -13,7 +14,8 @@ public class QuartzManager {
         this.scheduler = scheduler;
     }
 
-    /**
+    */
+/**
      * 添加一个定时任务
      *
      * @param jobName          任务名
@@ -22,7 +24,8 @@ public class QuartzManager {
      * @param triggerGroupName 触发器组名
      * @param jobClass         任务
      * @param cron             时间设置，参考quartz说明文档
-     */
+     *//*
+
     @SuppressWarnings({"unchecked", "rawtypes"})
     public void addJob(String jobName, String jobGroupName, String triggerName, String triggerGroupName, Class jobClass, String cron, Map<String, Object> params) {
         try {
@@ -53,13 +56,15 @@ public class QuartzManager {
         }
     }
 
-    /**
+    */
+/**
      * 修改一个任务的触发时间
      *
      * @param triggerName      触发器名
      * @param triggerGroupName 触发器组名
      * @param cron             时间设置，参考quartz说明文档
-     */
+     *//*
+
     public void modifyJobTime(String triggerName, String triggerGroupName, String cron) {
         try {
             TriggerKey triggerKey = TriggerKey.triggerKey(triggerName, triggerGroupName);
@@ -88,14 +93,16 @@ public class QuartzManager {
         }
     }
 
-    /**
+    */
+/**
      * 移除一个任务
      *
      * @param jobName          任务名
      * @param jobGroupName     任务组名
      * @param triggerName      触发器名
      * @param triggerGroupName 触发器组名
-     */
+     *//*
+
     public void removeJob(String jobName, String jobGroupName, String triggerName, String triggerGroupName) {
         try {
 
@@ -112,7 +119,8 @@ public class QuartzManager {
         }
     }
 
-    /**
+    */
+/**
      * 获取任务是否存在
      * <p>
      * STATE_BLOCKED 4 阻塞
@@ -121,7 +129,8 @@ public class QuartzManager {
      * STATE_NONE -1 不存在
      * STATE_NORMAL 0 正常
      * STATE_PAUSED 1 暂停
-     */
+     *//*
+
     public Boolean notExists(String triggerName, String triggerGroupName) {
         try {
             return scheduler.getTriggerState(TriggerKey.triggerKey(triggerName, triggerGroupName)) == Trigger.TriggerState.NONE;
@@ -130,3 +139,4 @@ public class QuartzManager {
         }
     }
 }
+*/

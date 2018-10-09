@@ -1,3 +1,4 @@
+/*
 package com.autobid.job;
 
 import com.autobid.model.BidList;
@@ -28,9 +29,14 @@ public class BidListTask {
         this.quartzManager = quartzManager;
     }
 
-/*    *//**
+*/
+/*    *//*
+*/
+/**
      *  根据配置生成cron表达式
      *//*
+*/
+/*
     private String getCron(SftpDTO dto) {
 
         // 时
@@ -42,7 +48,11 @@ public class BidListTask {
         // 每月几号
         Integer day = dto.getDay();
 
-        *//* 执行时间 0每天,1每周,2每月 *//*
+        *//*
+*/
+/* 执行时间 0每天,1每周,2每月 *//*
+*/
+/*
         Integer execType = dto.getExecType();
 
         String cron;
@@ -62,11 +72,14 @@ public class BidListTask {
         }
 
         return cron;
-    }*/
+    }*//*
 
-    /**
+
+    */
+/**
      *  添加定时任务
-     */
+     *//*
+
     private void addJob(BidList dto) {
 
         Long id = dto.getId();
@@ -83,9 +96,11 @@ public class BidListTask {
         );
     }
 
-    /**
+    */
+/**
      *  修改定时任务
-     */
+     *//*
+
     public void modifyJob(BidList dto) {
 
         Long id = dto.getId();
@@ -102,9 +117,11 @@ public class BidListTask {
         }
     }
 
-    /**
+    */
+/**
      *  移除定时任务
-     */
+     *//*
+
     public void removeJob(Long id) {
         quartzManager.removeJob(
                 job_prefix + id,
@@ -114,3 +131,4 @@ public class BidListTask {
         );
     }
 }
+*/

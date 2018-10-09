@@ -1,4 +1,4 @@
-package com.autobid.job;
+package com.autobid.job.bak;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,12 +7,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 @EnableScheduling
-public class MySecondExerciseJob {
+public class MyFirstExerciseJob {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public void myJobBusinessMethod() {
-        this.logger.info("哇,我是老二，被触发了哈哈哈哈哈");
+        this.logger.info("哇，我是老大，被触发了哈哈哈哈哈");
     }
 
 }
