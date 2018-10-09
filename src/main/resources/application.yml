@@ -42,3 +42,8 @@ spring:
 mybatis:
   type-aliases-package: com.example.demo.quartz.entity
   mapper-locations: classpath:mapper/*.xml
+
+init:
+  mode: 0
+  begin: 2018-09-01
+  end: 2018-09-30

@@ -1,4 +1,4 @@
-package com.autobid.job.bak;
+package com.autobid.bak;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

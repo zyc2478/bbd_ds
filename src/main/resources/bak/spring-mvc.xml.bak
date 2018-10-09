@@ -124,7 +124,7 @@
     <!-- job的配置结束 -->
 
 <!--    &lt;!&ndash; 工作的bean &ndash;&gt;
-    <bean id="bidListJob" class="com.autobid.job.BidListJob" />
+    <bean id="bidListJob" class="BidListJob" />
     &lt;!&ndash; 工作的bean &ndash;&gt;
     <bean id="bidListController" class="com.autobid.controller.BidListController" />-->
 

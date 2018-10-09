@@ -9,5 +9,8 @@
         <module name="bbd_ds" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="bbd_ds" target="1.7" />
+    </bytecodeTargetLevel>
   </component>
 </project>

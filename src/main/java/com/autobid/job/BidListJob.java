@@ -37,7 +37,7 @@ public class BidListJob {
     // 该类必须为public修饰
     // 该类必须含有空参数的构造器
 
-    @Value("${'init.mode'}")
+    @Value("${init.mode}")
     private String initMode;
 
     @Value("${init.begin}")
@@ -86,10 +86,10 @@ public class BidListJob {
     }
 
     public void execute() throws Exception {
-        System.out.println("initMode=" + initMode);
+        //System.out.println("initMode=" + initMode);
         //fetchDaysUntilNow();
-        System.out.println("The bidList json is : " + bidListService.getBidListByListingId(62068730));
-/*        if(initMode.equals("1")){
+        //System.out.println("The bidList json is : " + bidListService.getBidListByListingId(62068730));
+        if(initMode.equals("1")){
             try {
                 fetchSomeDays(initBegin,initEnd);
                 //bidListService.getBidListByListingId(62068730);
@@ -104,7 +104,7 @@ public class BidListJob {
             }
         } else {
             System.out.println("initMode in configuration must equals 0 or 1 !");
-        }*/
+        }
     }
 
     public void init() {

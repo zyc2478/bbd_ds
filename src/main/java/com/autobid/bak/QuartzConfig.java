@@ -1,4 +1,4 @@
-package com.autobid.job.bak;
+package com.autobid.bak;
 
 import org.quartz.Scheduler;
 import org.quartz.spi.JobFactory;

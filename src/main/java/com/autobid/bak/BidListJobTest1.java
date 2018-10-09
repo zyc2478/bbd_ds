@@ -1,4 +1,4 @@
-package com.autobid.job.bak;
+package com.autobid.bak;
 
 import com.autobid.service.BidListService;
 import org.junit.Test;

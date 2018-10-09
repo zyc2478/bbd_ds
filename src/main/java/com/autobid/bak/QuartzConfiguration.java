@@ -1,4 +1,4 @@
-package com.autobid.job.bak;
+package com.autobid.bak;
 
 import com.autobid.job.BidListJob;
 import org.quartz.Trigger;
