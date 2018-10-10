@@ -48,6 +48,8 @@ public class BidListJob implements Job,Serializable {
     @Value("${init.end}")
     private String initEnd;
 
+    private static final long serialVersionUID = 1L;
+
     @Autowired
     private BidListService bidListService ;
 
@@ -66,7 +68,7 @@ public class BidListJob implements Job,Serializable {
         JobDataMap params = context.getJobDetail().getJobDataMap();
 
         //ÒµÎñÂß¼­
-        //System.out.println("The Job will starting!");
+        System.out.println("The Job will starting!");
 
         //System.out.println("The result is: " + bidListService.getBidListByListingId(62068730));
         if( initMode.equals("1")){
